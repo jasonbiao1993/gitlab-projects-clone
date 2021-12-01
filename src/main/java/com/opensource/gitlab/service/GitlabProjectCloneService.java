@@ -51,7 +51,7 @@ public class GitlabProjectCloneService {
             e.printStackTrace();
         }
         for (GitGroup group : groups) {
-            List<GitProject> projects = getProjectsByGroup(group.getName());
+            List<GitProject> projects = getProjectsByGroup(String.valueOf(group.getId()));
             for (GitProject project : projects) {
                 String lastActivityBranchName = getLastActivityBranchName(project.getId());
                 if (StringUtils.isEmpty(lastActivityBranchName)) {
@@ -70,7 +70,7 @@ public class GitlabProjectCloneService {
      * @return
      */
     private List<GitProject> getAllProjects() {
-        String url = gitlabUrl + "/api/v3/projects?per_page={per_page}&private_token={private_token}";
+        String url = gitlabUrl + "/api/v4/projects?per_page={per_page}&private_token={private_token}";
         Map<String, String> uriVariables = new HashMap<>();
         uriVariables.put("per_page", "100");
         uriVariables.put("private_token", privateToken);
@@ -94,7 +94,7 @@ public class GitlabProjectCloneService {
      * @return
      */
     private List<GitProject> getProjectsByGroup(String group) {
-        String url = gitlabUrl + "/api/v3/groups/{group}/projects?per_page={per_page}&private_token={private_token}";
+        String url = gitlabUrl + "/api/v4/groups/{group}/projects?per_page={per_page}&private_token={private_token}";
         Map<String, String> uriVariables = new HashMap<>();
         uriVariables.put("group", group);
         uriVariables.put("per_page", "100");
@@ -118,7 +118,7 @@ public class GitlabProjectCloneService {
      * @return
      */
     private List<GitGroup> getGroups() {
-        String url = gitlabUrl + "/api/v3/groups?private_token={private_token}";
+        String url = gitlabUrl + "/api/v4/groups?private_token={private_token}";
         Map<String, String> uriVariables = new HashMap<>();
         uriVariables.put("private_token", privateToken);
         HttpHeaders headers = new HttpHeaders();
@@ -157,7 +157,7 @@ public class GitlabProjectCloneService {
      * @return
      */
     private List<GitBranch> getBranches(Long projectId) {
-        String url = gitlabUrl + "/api/v3/projects/{projectId}/repository/branches?private_token={privateToken}";
+        String url = gitlabUrl + "/api/v4/projects/{projectId}/repository/branches?private_token={privateToken}";
         Map<String, Object> uriVariables = new HashMap<>();
         uriVariables.put("projectId", projectId);
         uriVariables.put("privateToken", privateToken);
